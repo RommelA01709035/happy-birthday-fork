@@ -112,7 +112,9 @@ function blowOutCandles() {
 
   isCandlesBlownOut = true;
   cakeImg.src = "assets/cake_unlit.gif";
-  createConfetti();
+
+
+  createConfetti(15000);
 }
 
 // ASCII Confetti
@@ -133,27 +135,42 @@ const CONFETTI_SYMBOLS = [
 
 const CONFETTI_COLORS = ["#FFC107", "#2196F3", "#FF5722", "#4CAF50", "#E91E63", "#9C27B0"];
 
-function createConfetti() {
+function createConfetti(duration = 15000) {
   const container = document.createElement("div");
   container.className = "confetti-container";
   document.body.appendChild(container);
 
-  for (let i = 0; i < 100; i++) {
-    const confetti = document.createElement("span");
-    confetti.className = "confetti";
-    confetti.textContent = CONFETTI_SYMBOLS[Math.floor(Math.random() * CONFETTI_SYMBOLS.length)];
-    
-    confetti.style.color = CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)];
-    confetti.style.left = Math.random() * 100 + "vw";
-    confetti.style.fontSize = Math.random() * 1.5 + 1 + "rem";
-    
-    const duration = 3 + Math.random() * 3;
-    confetti.style.animationDuration = duration + "s";
-    confetti.style.setProperty("--sway", (Math.random() - 0.5) * 200 + "px");
+  const interval = setInterval(() => {
+    for (let i = 0; i < 8; i++) {
+      const confetti = document.createElement("span");
+      confetti.className = "confetti";
+      confetti.textContent =
+        CONFETTI_SYMBOLS[Math.floor(Math.random() * CONFETTI_SYMBOLS.length)];
 
-    container.appendChild(confetti);
-  }
+      confetti.style.color =
+        CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)];
+      confetti.style.left = Math.random() * 100 + "vw";
+      confetti.style.fontSize = Math.random() * 1.5 + 0.8 + "rem";
+
+      const fallDuration = 3 + Math.random() * 3;
+      confetti.style.animationDuration = fallDuration + "s";
+      confetti.style.setProperty(
+        "--sway",
+        (Math.random() - 0.5) * 200 + "px"
+      );
+
+      container.appendChild(confetti);
+
+      setTimeout(() => confetti.remove(), fallDuration * 1000);
+    }
+  }, 300); 
+
+  setTimeout(() => {
+    clearInterval(interval);
+    setTimeout(() => container.remove(), 6000);
+  }, duration);
 }
+
 
 // Blow detection
 let audioContext = null;
