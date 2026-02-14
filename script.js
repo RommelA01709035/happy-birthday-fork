@@ -108,8 +108,8 @@ function typeWriter(element, text, speed = 40) {
 
 async function startIntro() {
   await Swal.fire({
-    title: "Holaaaa 👀",
-    confirmButtonText: "Holaaa",
+    title: "Holaaaa 👀, preparate para dar muchos permisos",
+    confirmButtonText: "Holaaa, ok??",
     backdrop: "rgba(243,166,184,0.4)",
     allowOutsideClick: false,
     allowEscapeKey: false
@@ -162,6 +162,10 @@ async function showFinalBirthdaySequence() {
       typeWriter(el, "tqmmmmmmmmmmmmmmmmmmmmmm <3", 40);
     }
   });
+
+   setTimeout(() => {
+    window.location.href = "https://www.youtube.com/watch?v=bEfuMcQAhF0&list=RDbEfuMcQAhF0&start_radio=1";
+  }, 3500);
 }
 
 function fadeInMusic(targetVolume = 0.3, duration = 2000) {
