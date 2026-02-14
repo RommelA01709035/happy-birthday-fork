@@ -62,6 +62,43 @@ hands.onResults((results) => {
   }
 });
 
+function showBirthdayLoader(durationMs = 2200) {
+  if (typeof Swal === "undefined") return;
+
+  Swal.fire({
+    title: "✨ Wish loading… ✨",
+    html: `
+      <div class="birthday-loader"></div>
+      <div>Procesando tu soplido mágico…</div>
+    `,
+    showConfirmButton: false,
+    allowOutsideClick: false,
+    allowEscapeKey: false,
+    backdrop: "rgba(243,166,184,0.35)",
+  });
+
+  setTimeout(() => Swal.close(), durationMs);
+}
+
+function waitLoader(durationMs = 2200) {
+  if (typeof Swal === "undefined") return;
+
+  Swal.fire({
+    title: "✨ MMMMMM Esperaa!!… ✨",
+    html: `
+      <div class="birthday-loader"></div>
+      <div>Hay algo más…</div>
+    `,
+    showConfirmButton: false,
+    allowOutsideClick: false,
+    allowEscapeKey: false,
+    backdrop: "rgba(243,166,184,0.35)",
+  });
+
+  setTimeout(() => Swal.close(), durationMs);
+}
+
+
 // Match
 function updateMatchPosition() {
   if (!isHandDetected) return;
@@ -112,7 +149,8 @@ function blowOutCandles() {
 
   isCandlesBlownOut = true;
   cakeImg.src = "assets/cake_unlit.gif";
-
+  
+  showBirthdayLoader(4200);
 
   createConfetti(15000);
 }
