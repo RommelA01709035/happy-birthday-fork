@@ -62,7 +62,7 @@ hands.onResults((results) => {
   }
 });
 
-function showBirthdayLoader(durationMs = 2200) {
+async function showBirthdayLoader(durationMs = 2200) {
   if (typeof Swal === "undefined") return;
 
   Swal.fire({
@@ -79,8 +79,83 @@ function showBirthdayLoader(durationMs = 2200) {
 
   setTimeout(() => Swal.close(), durationMs);
 }
+async function showFinalBirthdaySequence() {
+  const messages = [
+    "Feliz cumpleaños",
+    "Gracias por ser la persona más espectacular",
+    "Risueña",
+    "Linda ",
+    "Bromista !!!",
+    "Interesante",
+    "¡Gracias por hacer brillar mis días!",
+    "Espero seguirte viendo brillar otro año",
+  ];
 
-function waitLoader(durationMs = 2200) {
+  for (let msg of messages) {
+    await Swal.fire({
+      title: msg,
+      backdrop: "rgba(243,166,184,0.4)",
+      width: "600px",
+      timer: 1800 + Math.random() * 1500,
+      timerProgressBar: true,
+      showConfirmButton: false
+    });
+  }
+
+  await Swal.fire({
+    title: "tqmmmmmmmmmmmmmmmmmmmmmm",
+    timer: 5000,
+    timerProgressBar: true,
+    backdrop: "rgba(243,166,184,0.4)",
+    width: "600px"
+  });
+}
+
+
+function showMessageCards() {
+  const messages = [
+     "Eres increíble",
+    "Tu sonrisa ilumina todo",
+    "De verdad eres especial",
+    "No sabes lo mucho que vales",
+    "Tu energía es única",
+    "Haces el mundo más bonito",
+    "Eres arte ",
+    "Eres luz ",
+    "Qué suerte coincidir contigo"
+  ];
+
+  messages.forEach((text, index) => {
+    const delay = 500 + Math.random() * 2000 + index * 400; 
+    const duration = 2000 + Math.random() * 2500; 
+
+    setTimeout(() => {
+      createCard(text, duration);
+    }, delay);
+  });
+}
+
+function createCard(text, duration) {
+  const card = document.createElement("div");
+  card.className = "birthday-card";
+  card.textContent = text;
+
+  card.style.left = Math.random() * 80 + 10 + "vw";
+  card.style.top = Math.random() * 60 + 20 + "vh";
+
+  document.body.appendChild(card);
+
+  setTimeout(() => {
+    card.classList.add("show");
+  }, 50);
+
+  setTimeout(() => {
+    card.classList.remove("show");
+    setTimeout(() => card.remove(), 500);
+  }, duration);
+}
+
+async function waitLoader(durationMs = 2200) {
   if (typeof Swal === "undefined") return;
 
   Swal.fire({
@@ -144,13 +219,20 @@ function lightCake() {
   match.style.display = "none";
 }
 
-function blowOutCandles() {
+async function blowOutCandles() {
   if (!isCakeLit || isCandlesBlownOut) return;
 
   isCandlesBlownOut = true;
   cakeImg.src = "assets/cake_unlit.gif";
   
-  showBirthdayLoader(4200);
+  await showBirthdayLoader(4200);
+  await waitLoader(4200);
+  setTimeout(() => {
+    showMessageCards();
+  }, 5500);
+  setTimeout(() => {
+    showFinalBirthdaySequence();
+  }, 6000);
 
   createConfetti(15000);
 }
