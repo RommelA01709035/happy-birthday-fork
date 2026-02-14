@@ -4,7 +4,7 @@ const ctx = canvas.getContext("2d");
 const match = document.querySelector(".match");
 const cakeArea = document.querySelector(".cake-area");
 const cakeImg = document.querySelector(".cake");
-
+const music = document.getElementById("bg-music");
 // Constants
 const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 const WEBCAM_WIDTH = isMobile ? 240 : 300;
@@ -99,6 +99,20 @@ function typeWriter(element, text, speed = 40) {
   });
 }
 
+async function startIntro() {
+  await Swal.fire({
+    title: "Hola 👀",
+    confirmButtonText: "💖",
+    backdrop: "rgba(243,166,184,0.4)",
+    allowOutsideClick: false,
+    allowEscapeKey: false
+  });
+
+  fadeInMusic(0.3, 2000);
+  initBlowDetection();
+}
+
+
 async function showFinalBirthdaySequence() {
   const messages = [
     "Feliz cumpleaños",
@@ -141,6 +155,45 @@ async function showFinalBirthdaySequence() {
       typeWriter(el, "tqmmmmmmmmmmmmmmmmmmmmmm <3", 40);
     }
   });
+}
+
+function fadeInMusic(targetVolume = 0.3, duration = 2000) {
+  if (!music) return;
+
+  music.volume = 0;
+  music.play().catch(() => {});
+
+  const steps = 20;
+  const stepTime = duration / steps;
+  const volumeStep = targetVolume / steps;
+
+  let currentStep = 0;
+
+  const interval = setInterval(() => {
+    currentStep++;
+    music.volume = Math.min(currentStep * volumeStep, targetVolume);
+
+    if (currentStep >= steps) clearInterval(interval);
+  }, stepTime);
+}
+
+function increaseVolume(targetVolume = 0.7, duration = 1500) {
+  const startVolume = music.volume;
+  const steps = 20;
+  const stepTime = duration / steps;
+  const volumeStep = (targetVolume - startVolume) / steps;
+
+  let currentStep = 0;
+
+  const interval = setInterval(() => {
+    currentStep++;
+    music.volume = Math.min(
+      startVolume + currentStep * volumeStep,
+      targetVolume
+    );
+
+    if (currentStep >= steps) clearInterval(interval);
+  }, stepTime);
 }
 
 
@@ -261,6 +314,7 @@ async function blowOutCandles() {
   await waitLoader(4200);
   setTimeout(() => {
     showMessageCards();
+    increaseVolume(0.7, 1500);
   }, 5500);
   setTimeout(() => {
     showFinalBirthdaySequence();
@@ -401,7 +455,18 @@ function startHandTracking() {
 
 window.addEventListener("DOMContentLoaded", () => {
   initCamera();
+   startIntro();
+   const startExperience = () => {
+    if (!audioContext) {
+      initBlowDetection();
+    }
 
+    fadeInMusic(0.3, 2000); 
+
+    document.body.removeEventListener("click", startExperience);
+  };
+
+  document.body.addEventListener("click", startExperience);
   if (isMobile) {
     document.body.addEventListener(
       "click",
