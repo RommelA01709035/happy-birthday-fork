@@ -65,20 +65,27 @@ hands.onResults((results) => {
 async function showBirthdayLoader(durationMs = 2200) {
   if (typeof Swal === "undefined") return;
 
-  Swal.fire({
-    title: "✨ Wish loading… ✨",
-    html: `
-      <div class="birthday-loader"></div>
-      <div>Procesando tu soplido mágico…</div>
-    `,
-    showConfirmButton: false,
-    allowOutsideClick: false,
-    allowEscapeKey: false,
-    backdrop: "rgba(243,166,184,0.35)",
+  return new Promise((resolve) => {
+    Swal.fire({
+      title: "✨ Deseo Cargándose… ✨",
+      html: `
+        <div class="birthday-loader"></div>
+        <div>Procesando tu soplido mágico…</div>
+      `,
+      showConfirmButton: false,
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      backdrop: "rgba(243,166,184,0.35)",
+      didOpen: () => {
+        setTimeout(() => {
+          Swal.close();
+          resolve(); 
+        }, durationMs);
+      }
+    });
   });
-
-  setTimeout(() => Swal.close(), durationMs);
 }
+
 
 function typeWriter(element, text, speed = 40) {
   return new Promise((resolve) => {
@@ -101,8 +108,8 @@ function typeWriter(element, text, speed = 40) {
 
 async function startIntro() {
   await Swal.fire({
-    title: "Hola 👀",
-    confirmButtonText: "💖",
+    title: "Holaaaa 👀",
+    confirmButtonText: "Holaaa",
     backdrop: "rgba(243,166,184,0.4)",
     allowOutsideClick: false,
     allowEscapeKey: false
@@ -244,7 +251,7 @@ async function waitLoader(durationMs = 2200) {
   if (typeof Swal === "undefined") return;
 
   Swal.fire({
-    title: "✨ MMMMMM Esperaa!!… ✨",
+    title: "✨ MMMM Esperaa!!… ✨",
     html: `
       <div class="birthday-loader"></div>
       <div>Hay algo más…</div>
@@ -320,7 +327,7 @@ async function blowOutCandles() {
     showFinalBirthdaySequence();
   }, 6000);
 
-  createConfetti(15000);
+  createConfetti(150000);
 }
 
 // ASCII Confetti
