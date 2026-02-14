@@ -79,10 +79,31 @@ async function showBirthdayLoader(durationMs = 2200) {
 
   setTimeout(() => Swal.close(), durationMs);
 }
+
+function typeWriter(element, text, speed = 40) {
+  return new Promise((resolve) => {
+    element.innerHTML = "";
+    let i = 0;
+
+    function typing() {
+      if (i < text.length) {
+        element.innerHTML += text.charAt(i);
+        i++;
+        setTimeout(typing, speed);
+      } else {
+        resolve();
+      }
+    }
+
+    typing();
+  });
+}
+
 async function showFinalBirthdaySequence() {
   const messages = [
     "Feliz cumpleaños",
-    "Gracias por ser la persona más espectacular",
+    "Gracias por ser la persona",
+    "más espectacular",
     "Risueña",
     "Linda ",
     "Bromista !!!",
@@ -93,21 +114,32 @@ async function showFinalBirthdaySequence() {
 
   for (let msg of messages) {
     await Swal.fire({
-      title: msg,
+      title: `<span id="swal-typing"></span>`, 
       backdrop: "rgba(243,166,184,0.4)",
       width: "600px",
       timer: 1800 + Math.random() * 1500,
       timerProgressBar: true,
-      showConfirmButton: false
+      showConfirmButton: false,
+
+      didOpen: () => {
+        const el = document.getElementById("swal-typing");
+        typeWriter(el, msg, 35); 
+      }
     });
   }
 
   await Swal.fire({
-    title: "tqmmmmmmmmmmmmmmmmmmmmmm",
+    title: `<span id="swal-typing"></span>`,
     timer: 5000,
+    showConfirmButton: false,
     timerProgressBar: true,
     backdrop: "rgba(243,166,184,0.4)",
-    width: "600px"
+    width: "600px",
+
+    didOpen: () => {
+      const el = document.getElementById("swal-typing");
+      typeWriter(el, "tqmmmmmmmmmmmmmmmmmmmmmm <3", 40);
+    }
   });
 }
 
